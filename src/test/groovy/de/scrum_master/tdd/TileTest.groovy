@@ -35,23 +35,23 @@ class TileTest extends Specification {
   }
 
   @Unroll
-  def "average of #corners is #average"(float[] corners, float average) {
+  def "average of #corners is #average"() {
     expect:
     Tile.average(corners) == average
 
     where:
-    corners                  | average
-    [0, 0, 0, 0]             | 0
-    [5, 5, 5, 5]             | 5
-    [1, 2, 2, 1]             | 1.5
-    [1, 2, 3, 4]             | 2.5
-    [-2, 2, -3, 3]           | 0
-    [1, 2, 3]                | 2
-    [1, 2]                   | 1.5
-    [3]                      | 3
-    [12, 34, 56, 78]         | 45
-    [-11, 22, -33, 44]       | 5.5
-    [1.23, 4.56, 7.89, 0.12] | 3.45
+    corners                      | average
+    [0f, 0f, 0f, 0f]             | 0f
+    [5f, 5f, 5f, 5f]             | 5f
+    [1f, 2f, 2f, 1f]             | 1.5f
+    [1f, 2f, 3f, 4f]             | 2.5f
+    [-2f, 2f, -3f, 3f]           | 0f
+    [1f, 2f, 3f]                 | 2f
+    [1f, 2f]                     | 1.5f
+    [3f]                         | 3f
+    [12f, 34f, 56f, 78f]         | 45f
+    [-11f, 22f, -33f, 44f]       | 5.5f
+    [1.23f, 4.56f, 7.89f, 0.12f] | 3.45f
   }
 
   @Unroll
@@ -168,8 +168,7 @@ class TileTest extends Specification {
       assert 0 < topDeviation
       assert 0 < leftDeviation
       assert 0 < rightDeviation
-    }
-    else {
+    } else {
       assert midDeviation <= 1.0e7
       assert bottomDeviation <= 1.0e7
       assert topDeviation <= 1.0e7

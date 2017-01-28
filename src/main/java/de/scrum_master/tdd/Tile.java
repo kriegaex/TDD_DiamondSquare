@@ -1,5 +1,7 @@
 package de.scrum_master.tdd;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import static java.lang.Math.abs;
@@ -81,76 +83,78 @@ class Tile {
     if (detailLevel >= sizeOrder)
       return;
     int stepSize = (int) pow(2, sizeOrder - detailLevel);
-    performDiamondStep(stepSize);
-    performSquareStep(stepSize);
+    float randomAmplitude = randomAmplitudes[detailLevel];
+    performDiamondStep(stepSize, randomAmplitude);
+    performSquareStep(stepSize, randomAmplitude);
     generateLandscape(++detailLevel);
   }
 
-  private void performDiamondStep(int stepSize) {
+  private void performDiamondStep(int stepSize, float randomAmplitude) {
     int semiStepSize = stepSize / 2;
+    List<Float> points = new LinkedList<>();
     for (int x = 0; x < maxIndex; x += stepSize) {
       for (int y = 0; y < maxIndex; y += stepSize) {
-        matrix[x + semiStepSize][y + semiStepSize] = (
-          matrix[x][y] +
-            matrix[x + stepSize][y] +
-            matrix[x + stepSize][y + stepSize] +
-            matrix[x][y + stepSize]
-        ) / 4;
+        points.clear();
+        points.add(matrix[x][y]);
+        points.add(matrix[x + stepSize][y]);
+        points.add(matrix[x + stepSize][y + stepSize]);
+        points.add(matrix[x][y + stepSize]);
+        matrix[x + semiStepSize][y + semiStepSize] = randomise(average(points), randomAmplitude);
       }
     }
   }
 
-  private void performSquareStep(int stepSize) {
+  private void performSquareStep(int stepSize, float randomAmplitude) {
     int semiStepSize = stepSize / 2;
-    boolean isEdgeCase;
+    List<Float> points = new LinkedList<>();
     for (int x = 0; x < maxIndex; x += stepSize) {
       for (int y = 0; y < maxIndex; y += stepSize) {
 
         // Bottom
-        isEdgeCase = y <= 0;
-        matrix[x + semiStepSize][y] = (
-          matrix[x][y] +
-            matrix[x + stepSize][y] +
-            matrix[x + semiStepSize][y + semiStepSize] +
-            (isEdgeCase ? 0 : matrix[x + semiStepSize][y - semiStepSize])
-        ) / (isEdgeCase ? 3 : 4);
+        points.clear();
+        points.add(matrix[x][y]);
+        points.add(matrix[x + stepSize][y]);
+        points.add(matrix[x + semiStepSize][y + semiStepSize]);
+        if (y > 0)
+          points.add(matrix[x + semiStepSize][y - semiStepSize]);
+        matrix[x + semiStepSize][y] = randomise(average(points), randomAmplitude);
 
         // Top
-        isEdgeCase = y + stepSize >= maxIndex;
-        matrix[x + semiStepSize][y + stepSize] = (
-          matrix[x][y + stepSize] +
-            matrix[x + stepSize][y + stepSize] +
-            matrix[x + semiStepSize][y + semiStepSize] +
-            (isEdgeCase ? 0 : matrix[x + semiStepSize][y + stepSize + semiStepSize])
-        ) / (isEdgeCase ? 3 : 4);
+        points.clear();
+        points.add(matrix[x][y + stepSize]);
+        points.add(matrix[x + stepSize][y + stepSize]);
+        points.add(matrix[x + semiStepSize][y + semiStepSize]);
+        if (y + stepSize < maxIndex)
+          points.add(matrix[x + semiStepSize][y + stepSize + semiStepSize]);
+        matrix[x + semiStepSize][y + stepSize] = randomise(average(points), randomAmplitude);
 
         // Left
-        isEdgeCase = x <= 0;
-        matrix[x][y + semiStepSize] = (
-          matrix[x][y] +
-            matrix[x][y + stepSize] +
-            matrix[x + semiStepSize][y + semiStepSize] +
-            (isEdgeCase ? 0 : matrix[x - semiStepSize][y + semiStepSize])
-        ) / (isEdgeCase ? 3 : 4);
+        points.clear();
+        points.add(matrix[x][y]);
+        points.add(matrix[x][y + stepSize]);
+        points.add(matrix[x + semiStepSize][y + semiStepSize]);
+        if (x > 0)
+          points.add(matrix[x - semiStepSize][y + semiStepSize]);
+        matrix[x][y + semiStepSize] = randomise(average(points), randomAmplitude);
 
         // Right
-        isEdgeCase = x + stepSize >= maxIndex;;
-        matrix[x + stepSize][y + semiStepSize] = (
-          matrix[x + stepSize][y] +
-            matrix[x + stepSize][y + stepSize] +
-            matrix[x + semiStepSize][y + semiStepSize] +
-            (isEdgeCase ? 0 : matrix[x + stepSize + semiStepSize][y + semiStepSize])
-        ) / (isEdgeCase ? 3 : 4);
+        points.clear();
+        points.add(matrix[x + stepSize][y]);
+        points.add(matrix[x + stepSize][y + stepSize]);
+        points.add(matrix[x + semiStepSize][y + semiStepSize]);
+        if (x + stepSize < maxIndex)
+          points.add(matrix[x + stepSize + semiStepSize][y + semiStepSize]);
+        matrix[x + stepSize][y + semiStepSize] = randomise(average(points), randomAmplitude);
 
       }
     }
   }
 
-  static float average(float... corners) {
+  static float average(List<Float> corners) {
     float sum = 0;
     for (float corner : corners)
       sum += corner;
-    return sum / corners.length;
+    return sum / corners.size();
   }
 
   static float randomise(float baseValue, float amplitude) {
