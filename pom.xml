@@ -8,8 +8,10 @@
 
   <name>Diamond-square algorithm</name>
   <description>
-    TDD kata by Robert C. Martin: Implement the diamond-square terrain generation algorithm
-    (https://en.wikipedia.org/wiki/Diamond-square_algorithm) in a test-driven way.
+    TDD kata by Robert C. Martin
+    (http://blog.cleancoder.com/uncle-bob/2017/01/09/DiamondSquare.html):
+
+    Implement the diamond-square terrain generation algorithm in a test-driven way.
   </description>
 
   <properties>
