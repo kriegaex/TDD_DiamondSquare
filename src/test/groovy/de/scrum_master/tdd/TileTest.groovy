@@ -149,12 +149,13 @@ class TileTest extends Specification {
 
     when:
     float midPoint = (bottomLeft + bottomRight + topLeft + topRight) / 4
-    float bottomPoint = (bottomLeft + bottomRight + midPoint) / 3
-    float topPoint = (topLeft + topRight + midPoint) / 3
-    float leftPoint = (bottomLeft + topLeft + midPoint) / 3
-    float rightPoint = (bottomRight + topRight + midPoint) / 3
+    float midPointRandomised = matrix[1][1]
+    float bottomPoint = (bottomLeft + bottomRight + midPointRandomised) / 3
+    float topPoint = (topLeft + topRight + midPointRandomised) / 3
+    float leftPoint = (bottomLeft + topLeft + midPointRandomised) / 3
+    float rightPoint = (bottomRight + topRight + midPointRandomised) / 3
 
-    float midDeviation = abs(matrix[1][1] - midPoint)
+    float midDeviation = abs(midPointRandomised - midPoint)
     float bottomDeviation = abs(matrix[1][0] - bottomPoint)
     float topDeviation = abs(matrix[1][2] - topPoint)
     float leftDeviation = abs(matrix[0][1] - leftPoint)
