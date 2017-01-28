@@ -8,7 +8,7 @@ import static java.lang.Math.log
 
 class TileTest extends Specification {
   @Unroll
-  def "tile of size order #sizeOrder has square edge length 2^#sizeOrder + 1 = #edgeLength"() {
+  "tile of size order #sizeOrder has square edge length 2^#sizeOrder + 1 = #edgeLength"() {
     given:
     def tile = Tile.ofSizeOrder(sizeOrder).create()
 
@@ -35,7 +35,7 @@ class TileTest extends Specification {
   }
 
   @Unroll
-  def "average of #corners is #average"() {
+  "average of #corners is #average"() {
     expect:
     Tile.average(corners) == average
 
@@ -55,7 +55,7 @@ class TileTest extends Specification {
   }
 
   @Unroll
-  def "random value around #baseValue with amplitude #amplitude is within specified bounds"() {
+  "random value around #baseValue with amplitude #amplitude is within specified bounds"() {
     given:
     def randomValue = Tile.randomise(baseValue, amplitude)
 
@@ -74,7 +74,7 @@ class TileTest extends Specification {
   }
 
   @Unroll
-  def "tile array of size order #sizeOrder has correctly initialised corners"() {
+  "tile array of size order #sizeOrder has correctly initialised corners"() {
     given:
     def bottomLeft = 1f
     def bottomRight = 2f
@@ -103,7 +103,7 @@ class TileTest extends Specification {
   }
 
   @Unroll
-  def "random amplitude #randomAmplitude for tile of size order #sizeOrder gets successively smaller for sub-tiles"() {
+  "random amplitude #randomAmplitude for tile of size order #sizeOrder gets successively smaller for sub-tiles"() {
     given:
     def tile = Tile.ofSizeOrder(sizeOrder).randomAmplitude(randomAmplitude).create()
 
@@ -134,7 +134,7 @@ class TileTest extends Specification {
   }
 
   @Unroll
-  def "check tile [#bottomLeft, #bottomRight, #topLeft, #topRight] of size order 1 with random amplitude #randomAmplitude"() {
+  "check tile [#bottomLeft, #bottomRight, #topLeft, #topRight] of size order 1 with random amplitude #randomAmplitude"() {
     given:
     def matrix = Tile
       .ofSizeOrder(1)
@@ -145,7 +145,7 @@ class TileTest extends Specification {
       .randomAmplitude(randomAmplitude)
       .create()
       .toArray()
-    println matrix
+    //println matrix
 
     when:
     float midPoint = (bottomLeft + bottomRight + topLeft + topRight) / 4
@@ -162,12 +162,13 @@ class TileTest extends Specification {
     float rightDeviation = abs(matrix[2][1] - rightPoint)
 
     then:
-    if (isRandomised) {
-      assert 0 < midDeviation
-      assert 0 < bottomDeviation
-      assert 0 < topDeviation
-      assert 0 < leftDeviation
-      assert 0 < rightDeviation
+    if (randomAmplitude) {
+      // Caveat: In rare cases the random deviation can be exactly 0.
+      assert midDeviation > 0
+      assert bottomDeviation > 0
+      assert topDeviation > 0
+      assert leftDeviation > 0
+      assert rightDeviation > 0
     } else {
       assert midDeviation <= 1.0e7
       assert bottomDeviation <= 1.0e7
@@ -195,7 +196,5 @@ class TileTest extends Specification {
     -10        | 3           | 22      | -5       | 3
     10         | 13          | 2       | 0        | 4
     999        | 9           | 11      | 77       | 10
-
-    isRandomised = randomAmplitude != 0
   }
 }
