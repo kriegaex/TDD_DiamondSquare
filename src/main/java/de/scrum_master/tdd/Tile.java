@@ -16,6 +16,10 @@ class Tile {
     matrix = new float[edgeLength][edgeLength];
   }
 
+  public Tile(int sizeOrder, float randomAmplitude) {
+    this(sizeOrder);
+  }
+
   public Tile(int sizeOrder, float bottomLeft, float bottomRight, float topLeft, float topRight) {
     this(sizeOrder);
     matrix[0][0] = bottomLeft;
@@ -44,5 +48,9 @@ class Tile {
     for (int i = 0; i < edgeLength; i++)
       result[i] = Arrays.copyOf(matrix[i], edgeLength);
     return result;
+  }
+
+  public float[] getAmplitudes() {
+    return new float[] { 1, 2};
   }
 }
