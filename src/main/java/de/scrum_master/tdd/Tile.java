@@ -9,6 +9,7 @@ class Tile {
   private int sizeOrder;
   private int edgeLength;
   private float[][] matrix;
+  private float[] randomAmplitudes;
 
   public Tile(int sizeOrder) {
     this.sizeOrder = sizeOrder;
@@ -18,6 +19,10 @@ class Tile {
 
   public Tile(int sizeOrder, float randomAmplitude) {
     this(sizeOrder);
+    randomAmplitudes = new float[sizeOrder];
+    for (int i = 0; i < sizeOrder; i++) {
+      randomAmplitudes[i] = (float) (Math.abs(randomAmplitude) * (Math.pow(2, sizeOrder - i) + 1) / edgeLength);
+    }
   }
 
   public Tile(int sizeOrder, float bottomLeft, float bottomRight, float topLeft, float topRight) {
@@ -51,6 +56,6 @@ class Tile {
   }
 
   public float[] getAmplitudes() {
-    return new float[] { 1, 2};
+    return Arrays.copyOf(randomAmplitudes, randomAmplitudes.length);
   }
 }

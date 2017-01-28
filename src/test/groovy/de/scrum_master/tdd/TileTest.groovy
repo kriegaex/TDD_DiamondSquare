@@ -95,15 +95,17 @@ class TileTest extends Specification {
   }
 
   @Unroll
-  def "random amplitudes for tile of size order #sizeOrder get successively smaller"() {
+  def "random amplitude #randomAmplitude for tile of size order #sizeOrder gets successively smaller for sub-tiles"() {
     given:
     def tile = new Tile(sizeOrder, randomAmplitude)
 
     when:
     def amplitudes = tile.getAmplitudes()
+    println amplitudes
     def previousAmplitude = 999999.99
 
     then:
+    amplitudes[0] >= 0
     for (float amplitude : amplitudes) {
       assert amplitude <= previousAmplitude
       previousAmplitude = amplitude
@@ -112,15 +114,15 @@ class TileTest extends Specification {
     where:
     sizeOrder | randomAmplitude
     1         | 11
-    2         | 22
+    2         | -22
     3         | 33
     4         | 0
     5         | 0
     6         | 4
-    7         | 3
+    7         | 1.1
     8         | 2.5
-    9         | 0
-    10        | 1.1
+    9         | -6
+    10        | 1025
   }
 
 }
