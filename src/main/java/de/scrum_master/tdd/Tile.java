@@ -1,6 +1,10 @@
 package de.scrum_master.tdd;
 
+import java.util.Random;
+
 class Tile {
+  private static final Random RANDOM = new Random();
+
   private int sizeOrder;
 
   public Tile(int sizeOrder) {
@@ -15,7 +19,7 @@ class Tile {
   }
 
   static float randomise(float baseValue, float amplitude) {
-    return -999999;
+    return baseValue + amplitude * (1 - 2 * RANDOM.nextFloat());
   }
 
   public int getEdgeLength() {
