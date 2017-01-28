@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>de.scrum-master.tdd</groupId>
+  <artifactId>diamond-square</artifactId>
+  <version>1.0-SNAPSHOT</version>
+
+  <name>Diamond-square algorithm</name>
+  <description>
+    TDD kata by Robert C. Martin: Implement the diamond-square terrain generation algorithm
+    (https://en.wikipedia.org/wiki/Diamond-square_algorithm) in a test-driven way.
+  </description>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.source-target.version>1.8</java.source-target.version>
+    <version.junit>4.11</version.junit>
+    <version.spock>1.0-groovy-2.4</version.spock>
+    <version.groovy>2.4.1</version.groovy>
+    <version.groovy-eclipse-compiler>2.9.2-01</version.groovy-eclipse-compiler>
+    <version.groovy-eclipse-batch>2.4.3-01</version.groovy-eclipse-batch>
+  </properties>
+
+  <build>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.6.0</version>
+          <configuration>
+            <source>${java.source-target.version}</source>
+            <target>${java.source-target.version}</target>
+            <!-- IMPORTANT -->
+            <useIncrementalCompilation>false</useIncrementalCompilation>
+            <encoding>${project.build.sourceEncoding}</encoding>
+            <compilerId>groovy-eclipse-compiler</compilerId>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>org.codehaus.groovy</groupId>
+              <artifactId>groovy-eclipse-compiler</artifactId>
+              <version>${version.groovy-eclipse-compiler}</version>
+            </dependency>
+            <dependency>
+              <groupId>org.codehaus.groovy</groupId>
+              <artifactId>groovy-eclipse-batch</artifactId>
+              <version>${version.groovy-eclipse-batch}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.groovy</groupId>
+          <artifactId>groovy-eclipse-compiler</artifactId>
+          <version>${version.groovy-eclipse-compiler}</version>
+          <extensions>true</extensions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.groovy</groupId>
+        <artifactId>groovy-eclipse-compiler</artifactId>
+        <!--<extensions>true</extensions>-->
+      </plugin>
+    </plugins>
+  </build>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- JUnit -->
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${version.junit}</version>
+        <scope>test</scope>
+      </dependency>
+      <!-- Groovy + Spock -->
+      <dependency>
+        <groupId>org.codehaus.groovy</groupId>
+        <artifactId>groovy-all</artifactId>
+        <scope>test</scope>
+        <version>${version.groovy}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.spockframework</groupId>
+        <artifactId>spock-core</artifactId>
+        <version>${version.spock}</version>
+        <scope>test</scope>
+      </dependency>
+      <!-- Mock classes (in addition to interfaces) in Spock -->
+      <dependency>
+        <groupId>cglib</groupId>
+        <artifactId>cglib-nodep</artifactId>
+        <version>3.2.0</version>
+        <scope>test</scope>
+      </dependency>
+      <!-- Mock final classes and classes without default constructors in Spock -->
+      <dependency>
+        <groupId>org.objenesis</groupId>
+        <artifactId>objenesis</artifactId>
+        <version>2.2</version>
+        <scope>test</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+    <!-- JUnit -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- Spock framework for unit and integration tests -->
+    <dependency>
+      <groupId>org.spockframework</groupId>
+      <artifactId>spock-core</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- Spock needs Groovy -->
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- Spock needs CGLIB for class mocking (interface mocking works out of the box) -->
+    <dependency>
+      <groupId>cglib</groupId>
+      <artifactId>cglib-nodep</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- Spock needs objenesis for (final) class mocking without default constructors -->
+    <dependency>
+      <groupId>org.objenesis</groupId>
+      <artifactId>objenesis</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+</project>
+
