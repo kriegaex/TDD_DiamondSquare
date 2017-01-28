@@ -133,4 +133,37 @@ class TileTest extends Specification {
     10        | 1025f
   }
 
+  @Unroll
+  def "check tiles of size order 1 without randomness"() {
+    given:
+    def tile = Tile
+      .ofSizeOrder(1)
+      .bottomLeft(bottomLeft)
+      .bottomRight(bottomRight)
+      .topLeft(topLeft)
+      .topRight(topRight)
+      .create()
+
+    when:
+    def matrix = tile.toArray()
+    float midPoint = (bottomLeft + bottomRight + topLeft + topRight) / 4
+
+    then:
+    matrix[1][1] == midPoint
+
+    and:
+    matrix[1][0] == (bottomLeft + bottomRight + midPoint) / 3 as float
+    matrix[2][1] == (bottomRight + topRight + midPoint) / 3 as float
+    matrix[1][2] == (topLeft + topRight + midPoint) / 3 as float
+    matrix[0][1] == (bottomLeft + topLeft + midPoint) / 3 as float
+
+    where:
+    bottomLeft | bottomRight | topLeft | topRight
+    0          | 0           | 0       | 0
+    0          | 1           | 2       | 3
+    -10        | 3           | 22      | -5
+    10         | 13          | 2       | 0
+    999        | 9           | 11      | 77
+
+  }
 }
