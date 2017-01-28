@@ -52,4 +52,23 @@ class TileTest extends Specification {
   private static int log2(int number) {
     log(number) / log(2)
   }
+
+  @Unroll
+  def "random value around #baseValue with amplitude #amplitude is within specified bounds"() {
+    given:
+    def randomValue = Tile.randomise(baseValue, amplitude)
+
+    expect:
+    randomValue >= baseValue - amplitude
+    randomValue <= baseValue + amplitude
+
+    where:
+    baseValue | amplitude
+    0         | 1
+    0         | 10
+    1         | 2
+    10        | 3
+    3         | 0
+    123.45    | 5.67
+  }
 }
