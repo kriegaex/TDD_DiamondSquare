@@ -109,7 +109,7 @@ class TileTest extends Specification {
 
     when:
     def amplitudes = tile.getAmplitudes()
-    println amplitudes
+    //println amplitudes
     def previousAmplitude = 999999.99
 
     then:
@@ -134,39 +134,68 @@ class TileTest extends Specification {
   }
 
   @Unroll
-  def "check tiles of size order 1 without randomness"() {
+  def "check tile [#bottomLeft, #bottomRight, #topLeft, #topRight] of size order 1 with random amplitude #randomAmplitude"() {
     given:
-    def tile = Tile
+    def matrix = Tile
       .ofSizeOrder(1)
       .bottomLeft(bottomLeft)
       .bottomRight(bottomRight)
       .topLeft(topLeft)
       .topRight(topRight)
+      .randomAmplitude(randomAmplitude)
       .create()
+      .toArray()
+    println matrix
 
     when:
-    def matrix = tile.toArray()
     float midPoint = (bottomLeft + bottomRight + topLeft + topRight) / 4
+    float bottomPoint = (bottomLeft + bottomRight + midPoint) / 3
+    float topPoint = (topLeft + topRight + midPoint) / 3
+    float leftPoint = (bottomLeft + topLeft + midPoint) / 3
+    float rightPoint = (bottomRight + topRight + midPoint) / 3
+
+    float midDeviation = abs(matrix[1][1] - midPoint)
+    float bottomDeviation = abs(matrix[1][0] - bottomPoint)
+    float topDeviation = abs(matrix[1][2] - topPoint)
+    float leftDeviation = abs(matrix[0][1] - leftPoint)
+    float rightDeviation = abs(matrix[2][1] - rightPoint)
 
     then:
-    matrix[1][1] == midPoint
+    if (isRandomised) {
+      assert 0 < midDeviation
+      assert 0 < bottomDeviation
+      assert 0 < topDeviation
+      assert 0 < leftDeviation
+      assert 0 < rightDeviation
+    }
+    else {
+      assert midDeviation <= 1.0e7
+      assert bottomDeviation <= 1.0e7
+      assert topDeviation <= 1.0e7
+      assert leftDeviation <= 1.0e7
+      assert rightDeviation <= 1.0e7
+    }
 
     and:
-    // Bottom
-    matrix[1][0] == (bottomLeft + bottomRight + midPoint) / 3 as float
-    // Top
-    matrix[1][2] == (topLeft + topRight + midPoint) / 3 as float
-    // Left
-    matrix[0][1] == (bottomLeft + topLeft + midPoint) / 3 as float
-    // Right
-    matrix[2][1] == (bottomRight + topRight + midPoint) / 3 as float
+    midDeviation <= randomAmplitude
+    bottomDeviation <= randomAmplitude
+    topDeviation <= randomAmplitude
+    leftDeviation <= randomAmplitude
+    rightDeviation <= randomAmplitude
 
     where:
-    bottomLeft | bottomRight | topLeft | topRight
-    0          | 0           | 0       | 0
-    0          | 1           | 2       | 3
-    -10        | 3           | 22      | -5
-    10         | 13          | 2       | 0
-    999        | 9           | 11      | 77
+    bottomLeft | bottomRight | topLeft | topRight | randomAmplitude
+    0          | 0           | 0       | 0        | 0
+    0          | 1           | 2       | 3        | 0
+    -10        | 3           | 22      | -5       | 0
+    10         | 13          | 2       | 0        | 0
+    999        | 9           | 11      | 77       | 0
+    0          | 0           | 0       | 0        | 1
+    0          | 1           | 2       | 3        | 2
+    -10        | 3           | 22      | -5       | 3
+    10         | 13          | 2       | 0        | 4
+    999        | 9           | 11      | 77       | 10
+
+    isRandomised = randomAmplitude != 0
   }
 }
