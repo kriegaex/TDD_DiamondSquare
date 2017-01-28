@@ -1,7 +1,10 @@
 package de.scrum_master.tdd;
 
-import java.util.Arrays;
 import java.util.Random;
+
+import static java.lang.Math.abs;
+import static java.lang.Math.pow;
+import static java.util.Arrays.copyOf;
 
 class Tile {
   private static final Random RANDOM = new Random();
@@ -11,26 +14,64 @@ class Tile {
   private float[][] matrix;
   private float[] randomAmplitudes;
 
-  public Tile(int sizeOrder) {
-    this.sizeOrder = sizeOrder;
-    edgeLength = (int) (Math.pow(2, sizeOrder) + 1);
-    matrix = new float[edgeLength][edgeLength];
-  }
+  public static class Factory {
+    private int sizeOrder;
+    private float randomAmplitude, bottomLeft, bottomRight, topLeft, topRight;
 
-  public Tile(int sizeOrder, float randomAmplitude) {
-    this(sizeOrder);
-    randomAmplitudes = new float[sizeOrder];
-    for (int i = 0; i < sizeOrder; i++) {
-      randomAmplitudes[i] = (float) (Math.abs(randomAmplitude) * (Math.pow(2, sizeOrder - i) + 1) / edgeLength);
+    public Factory(int sizeOrder) {
+      this.sizeOrder = sizeOrder;
+    }
+
+    public Factory randomAmplitude(float randomAmplitude) {
+      this.randomAmplitude = randomAmplitude;
+      return this;
+    }
+
+    public Factory bottomLeft(float bottomLeft) {
+      this.bottomLeft = bottomLeft;
+      return this;
+    }
+
+    public Factory bottomRight(float bottomRight) {
+      this.bottomRight = bottomRight;
+      return this;
+    }
+
+    public Factory topLeft(float topLeft) {
+      this.topLeft = topLeft;
+      return this;
+    }
+
+    public Factory topRight(float topRight) {
+      this.topRight = topRight;
+      return this;
+    }
+
+    public Tile create() {
+      return new Tile(this);
     }
   }
 
-  public Tile(int sizeOrder, float bottomLeft, float bottomRight, float topLeft, float topRight) {
-    this(sizeOrder);
-    matrix[0][0] = bottomLeft;
-    matrix[edgeLength - 1][0] = bottomRight;
-    matrix[0][edgeLength - 1] = topLeft;
-    matrix[edgeLength - 1][edgeLength - 1] = topRight;
+  private Tile(Factory factory) {
+    sizeOrder = factory.sizeOrder;
+    edgeLength = (int) pow(2, sizeOrder) + 1;
+
+    int maxIndex = edgeLength - 1;
+    matrix = new float[edgeLength][edgeLength];
+    matrix[0][0] = factory.bottomLeft;
+    matrix[maxIndex][0] = factory.bottomRight;
+    matrix[0][maxIndex] = factory.topLeft;
+    matrix[maxIndex][maxIndex] = factory.topRight;
+
+    randomAmplitudes = new float[sizeOrder];
+    for (int i = 0; i < sizeOrder; i++)
+      randomAmplitudes[i] =
+        abs(factory.randomAmplitude) *
+          ((float) pow(2, sizeOrder - i) + 1) / edgeLength;
+  }
+
+  public static Factory ofSizeOrder(int sizeOrder) {
+    return new Factory(sizeOrder);
   }
 
   static float average(float... corners) {
@@ -51,11 +92,11 @@ class Tile {
   public float[][] toArray() {
     final float[][] result = new float[edgeLength][];
     for (int i = 0; i < edgeLength; i++)
-      result[i] = Arrays.copyOf(matrix[i], edgeLength);
+      result[i] = copyOf(matrix[i], edgeLength);
     return result;
   }
 
   public float[] getAmplitudes() {
-    return Arrays.copyOf(randomAmplitudes, randomAmplitudes.length);
+    return copyOf(randomAmplitudes, randomAmplitudes.length);
   }
 }

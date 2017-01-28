@@ -3,13 +3,14 @@ package de.scrum_master.tdd
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import static java.lang.Math.abs
 import static java.lang.Math.log
 
 class TileTest extends Specification {
   @Unroll
   def "tile of size order #sizeOrder has square edge length 2^#sizeOrder + 1 = #edgeLength"() {
     given:
-    def tile = new Tile(sizeOrder)
+    def tile = Tile.ofSizeOrder(sizeOrder).create()
 
     expect:
     tile.getEdgeLength() == edgeLength
@@ -64,24 +65,31 @@ class TileTest extends Specification {
 
     where:
     baseValue | amplitude
-    0         | 1
-    0         | 10
-    1         | 2
-    10        | 3
-    3         | 0
-    123.45    | 5.67
+    0f        | 1f
+    0f        | 10f
+    1f        | 2f
+    10f       | 3f
+    3f        | 0f
+    123.45f   | 5.67f
   }
 
   @Unroll
   def "tile array of size order #sizeOrder has correctly initialised corners"() {
     given:
-    def bottomLeft = 1
-    def bottomRight = 2
-    def topLeft = 3
-    def topRight = 4
+    def bottomLeft = 1f
+    def bottomRight = 2f
+    def topLeft = 3f
+    def topRight = 4f
 
     when:
-    def matrix = new Tile(sizeOrder, bottomLeft, bottomRight, topLeft, topRight).toArray()
+    def matrix = Tile
+      .ofSizeOrder(sizeOrder)
+      .bottomLeft(bottomLeft)
+      .bottomRight(bottomRight)
+      .topLeft(topLeft)
+      .topRight(topRight)
+      .create()
+      .toArray()
     def maxIndex = matrix.length - 1
 
     then:
@@ -97,7 +105,7 @@ class TileTest extends Specification {
   @Unroll
   def "random amplitude #randomAmplitude for tile of size order #sizeOrder gets successively smaller for sub-tiles"() {
     given:
-    def tile = new Tile(sizeOrder, randomAmplitude)
+    def tile = Tile.ofSizeOrder(sizeOrder).randomAmplitude(randomAmplitude).create()
 
     when:
     def amplitudes = tile.getAmplitudes()
@@ -105,7 +113,7 @@ class TileTest extends Specification {
     def previousAmplitude = 999999.99
 
     then:
-    amplitudes[0] >= 0
+    amplitudes[0] == abs(randomAmplitude)
     for (float amplitude : amplitudes) {
       assert amplitude <= previousAmplitude
       previousAmplitude = amplitude
@@ -113,16 +121,16 @@ class TileTest extends Specification {
 
     where:
     sizeOrder | randomAmplitude
-    1         | 11
-    2         | -22
-    3         | 33
-    4         | 0
-    5         | 0
-    6         | 4
-    7         | 1.1
-    8         | 2.5
-    9         | -6
-    10        | 1025
+    1         | 11f
+    2         | -22f
+    3         | 33f
+    4         | 0f
+    5         | 0f
+    6         | 4f
+    7         | 1.1f
+    8         | 2.5f
+    9         | -6f
+    10        | 1025f
   }
 
 }
