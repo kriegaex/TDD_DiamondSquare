@@ -29,6 +29,10 @@ class TileTest extends Specification {
     10        | 1025
   }
 
+  private static int log2(int number) {
+    log(number) / log(2)
+  }
+
   @Unroll
   def "average of #corners is #average"(float[] corners, float average) {
     expect:
@@ -49,10 +53,6 @@ class TileTest extends Specification {
     [1.23, 4.56, 7.89, 0.12] | 3.45
   }
 
-  private static int log2(int number) {
-    log(number) / log(2)
-  }
-
   @Unroll
   def "random value around #baseValue with amplitude #amplitude is within specified bounds"() {
     given:
@@ -70,5 +70,27 @@ class TileTest extends Specification {
     10        | 3
     3         | 0
     123.45    | 5.67
+  }
+
+  @Unroll
+  def "tile array of size order #sizeOrder has correctly initialised corners"() {
+    given:
+    def bottomLeft = 1
+    def bottomRight = 2
+    def topLeft = 3
+    def topRight = 4
+
+    when:
+    def matrix = new Tile(sizeOrder, bottomLeft, bottomRight, topLeft, topRight).toArray()
+    def maxIndex = matrix.length - 1
+
+    then:
+    matrix[0][0] == bottomLeft
+    matrix[maxIndex][0] == bottomRight
+    matrix[0][maxIndex] == topLeft
+    matrix[maxIndex][maxIndex] == topRight
+
+    where:
+    sizeOrder << (1..10).collect()
   }
 }

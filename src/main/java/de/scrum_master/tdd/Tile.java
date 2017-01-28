@@ -11,6 +11,10 @@ class Tile {
     this.sizeOrder = sizeOrder;
   }
 
+  public Tile(int sizeOrder, float bottomLeft, float bottomRight, float topLeft, float topRight) {
+    this(sizeOrder);
+  }
+
   static float average(float... corners) {
     float sum = 0;
     for (float corner : corners)
@@ -24,5 +28,9 @@ class Tile {
 
   public int getEdgeLength() {
     return (int) (Math.pow(2, sizeOrder) + 1);
+  }
+
+  public float[][] toArray() {
+    return new float[getEdgeLength()][getEdgeLength()];
   }
 }
