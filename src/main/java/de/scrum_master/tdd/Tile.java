@@ -11,14 +11,14 @@ import static java.util.Arrays.copyOf;
 class Tile {
   private static final Random RANDOM = new Random();
 
-  private int sizeOrder;
-  private int edgeLength;
-  private int maxIndex;
-  private float[][] matrix;
-  private float[] randomAmplitudes;
+  private final int sizeOrder;
+  private final int edgeLength;
+  private final int maxIndex;
+  private final float[][] matrix;
+  private final float[] randomAmplitudes;
 
   public static class Factory {
-    private int sizeOrder;
+    private final int sizeOrder;
     private float randomAmplitude, bottomLeft, bottomRight, topLeft, topRight;
 
     public Factory(int sizeOrder) {
