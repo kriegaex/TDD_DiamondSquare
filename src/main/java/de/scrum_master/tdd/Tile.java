@@ -1,7 +1,5 @@
 package de.scrum_master.tdd;
 
-import java.util.List;
-
 class Tile {
   private int sizeOrder;
 
@@ -10,7 +8,10 @@ class Tile {
   }
 
   public static float average(float... corners) {
-    return -999999;
+    float sum = 0;
+    for (float corner : corners)
+      sum += corner;
+    return sum / corners.length;
   }
 
   public int getEdgeLength() {
