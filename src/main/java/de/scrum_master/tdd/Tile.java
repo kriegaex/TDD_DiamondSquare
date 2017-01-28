@@ -11,6 +11,7 @@ class Tile {
 
   private int sizeOrder;
   private int edgeLength;
+  private int maxIndex;
   private float[][] matrix;
   private float[] randomAmplitudes;
 
@@ -56,7 +57,7 @@ class Tile {
     sizeOrder = factory.sizeOrder;
     edgeLength = (int) pow(2, sizeOrder) + 1;
 
-    int maxIndex = edgeLength - 1;
+    maxIndex = edgeLength - 1;
     matrix = new float[edgeLength][edgeLength];
     matrix[0][0] = factory.bottomLeft;
     matrix[maxIndex][0] = factory.bottomRight;
@@ -68,10 +69,81 @@ class Tile {
       randomAmplitudes[i] =
         abs(factory.randomAmplitude) *
           ((float) pow(2, sizeOrder - i) + 1) / edgeLength;
+
+    generateLandscape(0);
   }
 
   public static Factory ofSizeOrder(int sizeOrder) {
     return new Factory(sizeOrder);
+  }
+
+  private void generateLandscape(int detailLevel) {
+    if (detailLevel >= sizeOrder)
+      return;
+    int stepSize = (int) pow(2, sizeOrder - detailLevel);
+    performDiamondStep(stepSize);
+    performSquareStep(stepSize);
+    generateLandscape(++detailLevel);
+  }
+
+  private void performDiamondStep(int stepSize) {
+    int semiStepSize = stepSize / 2;
+    for (int x = 0; x < maxIndex; x += stepSize) {
+      for (int y = 0; y < maxIndex; y += stepSize) {
+        matrix[x + semiStepSize][y + semiStepSize] = (
+          matrix[x][y] +
+            matrix[x + stepSize][y] +
+            matrix[x + stepSize][y + stepSize] +
+            matrix[x][y + stepSize]
+        ) / 4;
+      }
+    }
+  }
+
+  private void performSquareStep(int stepSize) {
+    int semiStepSize = stepSize / 2;
+    boolean isEdgeCase;
+    for (int x = 0; x < maxIndex; x += stepSize) {
+      for (int y = 0; y < maxIndex; y += stepSize) {
+
+        // Bottom
+        isEdgeCase = y <= 0;
+        matrix[x + semiStepSize][y] = (
+          matrix[x][y] +
+            matrix[x + stepSize][y] +
+            matrix[x + semiStepSize][y + semiStepSize] +
+            (isEdgeCase ? 0 : matrix[x + semiStepSize][y - semiStepSize])
+        ) / (isEdgeCase ? 3 : 4);
+
+        // Top
+        isEdgeCase = y + stepSize >= maxIndex;
+        matrix[x + semiStepSize][y + stepSize] = (
+          matrix[x][y + stepSize] +
+            matrix[x + stepSize][y + stepSize] +
+            matrix[x + semiStepSize][y + semiStepSize] +
+            (isEdgeCase ? 0 : matrix[x + semiStepSize][y + stepSize + semiStepSize])
+        ) / (isEdgeCase ? 3 : 4);
+
+        // Left
+        isEdgeCase = x <= 0;
+        matrix[x][y + semiStepSize] = (
+          matrix[x][y] +
+            matrix[x][y + stepSize] +
+            matrix[x + semiStepSize][y + semiStepSize] +
+            (isEdgeCase ? 0 : matrix[x - semiStepSize][y + semiStepSize])
+        ) / (isEdgeCase ? 3 : 4);
+
+        // Right
+        isEdgeCase = x + stepSize >= maxIndex;;
+        matrix[x + stepSize][y + semiStepSize] = (
+          matrix[x + stepSize][y] +
+            matrix[x + stepSize][y + stepSize] +
+            matrix[x + semiStepSize][y + semiStepSize] +
+            (isEdgeCase ? 0 : matrix[x + stepSize + semiStepSize][y + semiStepSize])
+        ) / (isEdgeCase ? 3 : 4);
+
+      }
+    }
   }
 
   static float average(float... corners) {
