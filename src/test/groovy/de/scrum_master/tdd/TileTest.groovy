@@ -3,6 +3,7 @@ package de.scrum_master.tdd
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import static de.scrum_master.tdd.ImageMapper.ColourMap.*
 import static java.lang.Math.abs
 import static java.lang.Math.log
 
@@ -76,10 +77,10 @@ class TileTest extends Specification {
   @Unroll
   "tile array of size order #sizeOrder has correctly initialised corners"() {
     given:
-    def bottomLeft = 1f
-    def bottomRight = 2f
-    def topLeft = 3f
-    def topRight = 4f
+    def bottomLeft = -4000f
+    def bottomRight = 8000f
+    def topLeft = 2500f
+    def topRight = -2500f
 
     when:
     def matrix = Tile
@@ -88,9 +89,19 @@ class TileTest extends Specification {
       .bottomRight(bottomRight)
       .topLeft(topLeft)
       .topRight(topRight)
+      .randomAmplitude(5000)
       .create()
       .toArray()
     def maxIndex = matrix.length - 1
+
+/*
+    // Generate some nice pics in multiple variants per tile size
+    def imageMapper = new ImageMapper(matrix)
+    imageMapper.saveImageToFile("image-${sizeOrder}-globe", GMT_GLOBE)
+    imageMapper.saveImageToFile("image-${sizeOrder}-gray-simple", GRAY_SIMPLE)
+    imageMapper.saveImageToFile("image-${sizeOrder}-gray-stretched", GRAY_STRETCH_VALUES)
+    imageMapper.saveImageToFile("image-${sizeOrder}-clouds-stretched", CLOUDS_STRETCHED)
+*/
 
     then:
     matrix[0][0] == bottomLeft
@@ -99,8 +110,9 @@ class TileTest extends Specification {
     matrix[maxIndex][maxIndex] == topRight
 
     where:
-    sizeOrder << (1..10).collect()
+    sizeOrder << (1..11).collect()
   }
+
 
   @Unroll
   "random amplitude #randomAmplitude for tile of size order #sizeOrder gets successively smaller for sub-tiles"() {
