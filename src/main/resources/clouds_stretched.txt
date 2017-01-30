@@ -1,0 +1,9 @@
+# See http://gmt.soest.hawaii.edu/projects/gmt/wiki/Download
+# See http://gmt.soest.hawaii.edu/doc/latest/makecpt.html
+#
+# But honestly, I created this file from scratch and did not use GMT. ;-)
+# It creates an impression of blue sky + clouds.
+
+-100    0/0/255
+0       white
+100     gray50

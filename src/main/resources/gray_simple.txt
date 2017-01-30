@@ -1,0 +1,8 @@
+# See http://gmt.soest.hawaii.edu/projects/gmt/wiki/Download
+# See http://gmt.soest.hawaii.edu/doc/latest/makecpt.html
+#
+# But honestly, I created this file from scratch and did not use GMT. ;-)
+
+-10000  black
+0       gray50
+9000    white
