@@ -68,9 +68,8 @@ class Tile {
 
     randomAmplitudes = new float[sizeOrder];
     for (int i = 0; i < sizeOrder; i++)
-      randomAmplitudes[i] =
-        abs(factory.randomAmplitude) *
-          ((float) pow(2, sizeOrder - i) + 1) / edgeLength;
+      // Powers of < 1.5: too noisy; 1.5-2: ok, increasingly smooth; > 2: too smooth, boring
+      randomAmplitudes[i] = abs(factory.randomAmplitude) / (float) pow(2, i);
 
     generateLandscape(0);
   }
