@@ -31,9 +31,10 @@ public class ImageMapper {
   }
 
   void saveImageToFile(String fileName, ColourMap colourMap) throws IOException, URISyntaxException {
-    // Note: BufferedImage defines (0,0) as upper left corner, so the image is quasi upside-down
+    // Note 1: BufferedImage defines (0,0) as upper left corner, so the image is quasi upside-down
     // when compared to our semantic usage of terms like "top" and "bottom" elsewhere in the code.
-    BufferedImage image = new BufferedImage(matrix.length, matrix.length, BufferedImage.TYPE_INT_ARGB);
+    // Note 2: Gray-scale pics are saved in 24 bit RGB, we could also use use TYPE_BYTE_GRAY here.
+    BufferedImage image = new BufferedImage(matrix.length, matrix.length, BufferedImage.TYPE_INT_RGB);
     int maxIndex = matrix.length - 1;
 
     ColourTable colourTable = ColourTable.fromFile(colourMap.fileName);
