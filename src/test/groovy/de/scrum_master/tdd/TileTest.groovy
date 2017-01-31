@@ -98,8 +98,9 @@ class TileTest extends Specification {
     // Generate some nice pics in multiple variants per tile size
     def imageMapper = new ImageMapper(matrix)
     imageMapper.saveImageToFile("image-${sizeOrder}-globe", GMT_GLOBE)
+    imageMapper.saveImageToFile("image-${sizeOrder}-globe-stretched", GMT_GLOBE_STRETCHED)
     imageMapper.saveImageToFile("image-${sizeOrder}-gray-simple", GRAY_SIMPLE)
-    imageMapper.saveImageToFile("image-${sizeOrder}-gray-stretched", GRAY_STRETCH_VALUES)
+    imageMapper.saveImageToFile("image-${sizeOrder}-gray-stretched", GRAY_STRETCHED)
     imageMapper.saveImageToFile("image-${sizeOrder}-clouds-stretched", CLOUDS_STRETCHED)
 */
 

@@ -8,10 +8,11 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 public class ImageMapper {
-  public static enum ColourMap {
+  public enum ColourMap {
     GMT_GLOBE("gmt_globe.txt", false),
+    GMT_GLOBE_STRETCHED("gmt_globe.txt", true),
     GRAY_SIMPLE("gray_simple.txt", false),
-    GRAY_STRETCH_VALUES("gray_stretched.txt", true),
+    GRAY_STRETCHED("gray_stretched.txt", true),
     CLOUDS_STRETCHED("clouds_stretched.txt", true);
 
     private final String fileName;
