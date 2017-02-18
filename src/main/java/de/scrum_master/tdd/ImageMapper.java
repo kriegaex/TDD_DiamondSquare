@@ -42,6 +42,7 @@ public class ImageMapper {
       float[] extremeValues = getExtremeValues();
       float minValue = extremeValues[0];
       float maxValue = extremeValues[1];
+//      System.out.println("min/max = " + minValue + " / " + maxValue);
       colourTable.stretchEntries(minValue, maxValue);
     }
 

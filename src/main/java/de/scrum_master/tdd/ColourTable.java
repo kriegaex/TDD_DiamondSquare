@@ -6,6 +6,7 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,7 +37,9 @@ public class ColourTable {
 
   private static String namedColourToRGB(String line) {
     // TODO: Remove this method when fix for http://gmt.soest.hawaii.edu/issues/996 has been released
-    Matcher colourNameMatcher = Pattern.compile("(.+ )(gray([0-9]+)|[a-zA-Z]+)").matcher(line.toLowerCase());
+    Matcher colourNameMatcher = Pattern
+      .compile("(.+ )(gray([0-9]+)|[a-zA-Z]+)")
+      .matcher(line.toLowerCase(Locale.ENGLISH));
     if (!colourNameMatcher.matches())
       return line;
     String lineWithoutColour = colourNameMatcher.group(1);
