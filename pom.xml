@@ -198,6 +198,7 @@
               <test.tmpdir>${project.build.directory}/tmp</test.tmpdir>
               <geb.env>${geb.env}</geb.env>
             </systemPropertyVariables>
+            <argLine>-Dfile.encoding=UTF8</argLine>
           </configuration>
         </plugin>
 
@@ -216,6 +217,7 @@
               <test.tmpdir>${project.build.directory}/tmp</test.tmpdir>
               <geb.env>${geb.env}</geb.env>
             </systemPropertyVariables>
+            <argLine>-Dfile.encoding=UTF8</argLine>
           </configuration>
           <executions>
             <execution>
