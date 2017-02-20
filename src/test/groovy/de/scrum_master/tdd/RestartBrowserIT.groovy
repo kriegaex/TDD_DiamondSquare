@@ -2,9 +2,6 @@ package de.scrum_master.tdd
 
 import geb.driver.CachingDriverFactory
 import geb.spock.GebReportingSpec
-import org.openqa.selenium.Keys
-import org.spockframework.runtime.model.FeatureInfo
-import spock.lang.Shared
 
 /**
  * See http://stackoverflow.com/questions/42069291 and
