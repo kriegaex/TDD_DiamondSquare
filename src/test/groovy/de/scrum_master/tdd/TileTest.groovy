@@ -123,7 +123,6 @@ class TileTest extends Specification {
     when:
     def amplitudes = tile.getAmplitudes()
 //    println "amplitudes = $amplitudes, count = ${amplitudes.length}, sum = ${amplitudes.toList().sum()}"
-    new ImageMapper(tile.toArray()).saveImageToFile("image-${sizeOrder}-globe-stretched", GMT_GLOBE_STRETCHED)
     def previousAmplitude = 999999.99
 
     then:
@@ -135,16 +134,16 @@ class TileTest extends Specification {
 
     where:
     sizeOrder | randomAmplitude
-    1         | 100f
-    2         | 100f
-    3         | 100f
-    4         | 100f
-    5         | 100f
-    6         | 100f
-    7         | 100f
-    8         | 100f
-    9         | 100f
-    10        | 100f
+    1         | 11f
+    2         | -22f
+    3         | 33f
+    4         | 0f
+    5         | 0f
+    6         | 4f
+    7         | 1.1f
+    8         | 2.5f
+    9         | -6f
+    10        | 1025f
   }
 
   @Unroll
