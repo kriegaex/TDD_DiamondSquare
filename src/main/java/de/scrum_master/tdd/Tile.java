@@ -158,6 +158,7 @@ class Tile {
 
   static float randomise(float baseValue, float amplitude) {
     return baseValue + amplitude * (1 - 2 * RANDOM.nextFloat());
+//    return baseValue + amplitude /** (1 - 2 * RANDOM.nextFloat())*/;
   }
 
   public int getEdgeLength() {
